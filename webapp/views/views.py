@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import random
 from datetime import datetime
 
 from flask import request
@@ -13,12 +14,47 @@ from flask_login import login_user, logout_user, login_required, current_user
 from webapp import app, db
 from webapp.models.products import Products, ProductImages, ProductCategories
 from webapp.models.users import Users
+from webapp.models.events import UpcomingEvents
 
 
 @app.route("/", methods=["GET"])
 def index():
-    coasters = Products.query.filter(Products.product_category == "COA").all()
-    return render_template('index.html', coasters=coasters, search_enabled=False), 200
+    search_enabled = False
+    
+    coasters = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id) \
+        .filter(Products.product_category == "COA") \
+        .all()              
+    
+    if coasters:
+        coaster_index = random.randint(0, len(coasters) - 1)
+        coaster_highlight = coasters[coaster_index]
+        
+    else:
+        coaster_highlight = None
+
+    boards = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id) \
+        .filter(Products.product_category == "CGB") \
+        .all()              
+    
+    if boards:
+        board_index = random.randint(0, len(boards) - 1)
+        board_highlight = boards[board_index]
+        
+    else:
+        board_highlight = None
+        
+    upcoming_events = UpcomingEvents.query.order_by(UpcomingEvents.date).all()
+    
+    return render_template(
+        'index.html', 
+        coasters=coasters, 
+        coaster_highlight=coaster_highlight,
+        board_highlight=board_highlight,
+        upcoming_events=upcoming_events, 
+        search_enabled=search_enabled
+    ), 200
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -111,7 +147,9 @@ def products():
     product_categories = ProductCategories.query.filter(
         ProductCategories.category_code != "null", 
         ProductCategories.category_code != "None"
-    ).all()
+        ) \
+        .order_by(ProductCategories.category_name) \
+        .all()
     
     category_code = request.args.get('pcc', None)    
     if category_code:
