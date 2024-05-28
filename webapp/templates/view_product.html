@@ -1,0 +1,102 @@
+<!doctype html>
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<div class="container">
+    <svg 
+    class="bd-placeholder-img card-img-top" width="100%" height="225" 
+    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.product_name }}" 
+    preserveAspectRatio="xMidYMid slice" focusable="false">
+    <title>{{ product.product_name }}</title>
+    <rect width="100%" height="225" fill="#55595c"/>
+    {% if image %}
+        <image href="data:image/png;base64,{{ image.encoded_image }}" alt="{{ product.product_name }}" width="100%" height="225" />
+    {% else %}
+        <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">Missing image for product: {{ product.product_name }}</text>
+    {% endif %}
+    </svg>
+</div>
+
+<div class="container">
+    <h3 class="mt-5">Product Details</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="sku">SKU</label>
+                <div class="form-control" id="sku">{{ product.sku }}</div>
+            </div>
+            <div class="form-group">
+                <label for="product_name">Product Name</label>
+                <div class="form-control" id="product_name">{{ product.product_name }}</div>
+            </div>
+            <div class="form-group">
+                <label for="product_category">Product Category</label>
+                <div class="form-control" id="product_category">{{ product.product_category }}</div>
+            </div>
+            <div class="form-group">
+                <label for="product_cost">Product Cost</label>
+                <div class="form-control" id="product_cost">{{ product.product_cost }}</div>
+            </div>
+            <div class="form-group">
+                <label for="suggested_sales_price">Suggested Sales Price</label>
+                <div class="form-control" id="suggested_sales_price">{{ product.suggested_sales_price }}</div>
+            </div>
+            <div class="form-group">
+                <label for="sales_tax_payable_based_on_suggested_sales_price">Sales Tax Payable</label>
+                <div class="form-control" id="sales_tax_payable_based_on_suggested_sales_price">{{ product.sales_tax_payable_based_on_suggested_sales_price }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="profit_based_on_suggested_sales_price">Profit Based on Suggested Sales Price</label>
+                <div class="form-control" id="profit_based_on_suggested_sales_price">{{ product.profit_based_on_suggested_sales_price }}</div>
+            </div>
+            <div class="form-group">
+                <label for="percentage_of_profit">Percentage of Profit</label>
+                <div class="form-control" id="percentage_of_profit">{{ product.percentage_of_profit }}</div>
+            </div>
+            <div class="form-group">
+                <label for="units_made">Units Made</label>
+                <div class="form-control" id="units_made">{{ product.units_made }}</div>
+            </div>
+            <div class="form-group">
+                <label for="units_sold">Units Sold</label>
+                <div class="form-control" id="units_sold">{{ product.units_sold }}</div>
+            </div>
+            <div class="form-group">
+                <label for="units_available_for_sale">Units Available for Sale</label>
+                <div class="form-control" id="units_available_for_sale">{{ product.units_available_for_sale }}</div>
+            </div>
+            <div class="form-group">
+                <label for="cost_of_units_made">Cost of Units Made</label>
+                <div class="form-control" id="cost_of_units_made">{{ product.cost_of_units_made }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="cost_of_inventory_available_for_sale">Cost of Inventory Available for Sale</label>
+                <div class="form-control" id="cost_of_inventory_available_for_sale">{{ product.cost_of_inventory_available_for_sale }}</div>
+            </div>
+            <div class="form-group">
+                <label for="cogs_per_units_sold">COGS per Unit Sold</label>
+                <div class="form-control" id="cogs_per_units_sold">{{ product.cogs_per_units_sold }}</div>
+            </div>
+            <div class="form-group">
+                <label for="money_collected_including_sales_tax">Money Collected Including Sales Tax</label>
+                <div class="form-control" id="money_collected_including_sales_tax">{{ product.money_collected_including_sales_tax }}</div>
+            </div>
+            <div class="form-group">
+                <label for="date_sold">Date Sold</label>
+                <div class="form-control" id="date_sold">{{ product.date_sold }}</div>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <div class="form-control" id="weight">{{ product.weight }}</div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+{% endblock %}

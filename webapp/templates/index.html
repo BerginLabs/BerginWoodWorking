@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="container">
+    <br>
+
+    <div class="p-4 p-md-5 mb-4  text-black rounded bg-light" align="center">
+        <div class="col-md-12 px-0">
+            <h2 class="display-3 fw-bold">Bergin Woodworking</h2>
+            <p class="lead my-3">Established in Bakersfield, CA.</p>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Product Highlights</strong>
+            <h4 class="mb-0">Coasters in stock.</h4>
+            <div class="mb-1 text-muted">
+                <p>{{ coasters|length }} available online!</p>
+            </div>
+            <a href="#" class="stretched-link">Details</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+            <svg class="bd-placeholder-img" width="200" height="250" xmlns="" role="img" aria-label="" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Events</title>
+                <rect width="100%" height="100%" fill="#55595c"/>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em"></text>
+            </svg>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Newly Products</strong>
+                <h4 class="mb-0">Cutting Board - XYZ</h4>
+                <div class="mb-1 text-muted">
+                </div>
+                    <p class="card-text mb-auto">Checkout the newly created <a href="#" class="stretched-link">cutting board</a>.</p>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="200" height="250" xmlns="" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+            </div>
+        </div>
+    </div>
+    
+  </div>
+
+  <div class="row g-5">
+    <div class="col-md-8">
+        <h3 class="pb-4 mb-4 fst-italic border-bottom">
+            Upcoming Events
+        </h3>
+        <article class="blog-post">
+            <h2 class="blog-post-title">Riverwalk Park!</h2>
+            <p class="blog-post-meta">May 18th <a href="#">Details</a></p>
+            <p>Bergin Woodworking plans to attend this event.</p>
+            <hr>
+    </div>
+
+    <div class="col-md-4">
+        <div class="position-sticky" style="top: 2rem;">
+            <div class="p-4 mb-3 bg-light rounded">
+                <h4 class="fst-italic">About</h4>
+                <p class="mb-0">Bergin Woodworking was Established in 1989.</p>
+            </div>
+
+        <div class="p-4">
+            <h4 class="fst-italic">Resources</h4>
+            <ol class="list-unstyled mb-0">
+                <li><a href="#">Product Info</a></li>
+                <li><a href="#">Maintenance Kits</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ol>
+        </div>
+
+        <div class="p-4">
+            <h4 class="fst-italic">Social Media</h4>
+            <ol class="list-unstyled">
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Facebook</a></li>
+            </ol>
+        </div>
+    </div>
+    </div>
+</main>
+{% endblock %}
