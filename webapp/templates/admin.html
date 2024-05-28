@@ -1,0 +1,57 @@
+<!doctype html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">    
+    <div class="p-4 p-md-5 mb-4  text-black rounded bg-light" align="center">
+        <div class="col-md-12 px-0">
+            <h2 class="display-3" >Admin Panel</h2>
+            <p class="lead my-3"> {{ product_data|length }} Records</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Sales Price</th>
+                <th>Units Made</th>
+                <th>Units Sold</th>
+                <th>Units Available</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product, image in product_data %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('view_product', product_id=product.product_id) }}">{{ product.product_name }}</a>
+                    </td>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.product_category }}</td>
+                    <td>{{ product.suggested_sales_price }}</td>
+                    <td>{{ product.units_made }}</td>
+                    <td>{{ product.units_sold }}</td>
+                    <td>{{ product.units_available_for_sale }}</td>
+                    <td>
+                        {% if image.encoded_image %}
+                            <img src="data:image/png;base64,{{ image.encoded_image }}" alt="Product Image" style="width:100px; height:auto;">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ url_for('edit_product', product_id=product.product_id) }}" type="button" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ url_for('remove_product', product_id=product.product_id) }}" type="button" class="btn btn-sm btn-danger">Remove</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

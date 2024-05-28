@@ -1,0 +1,105 @@
+<!doctype html>
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<div class="container">
+    <svg 
+    class="bd-placeholder-img card-img-top" width="100%" height="225" 
+    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.product_name }}" 
+    preserveAspectRatio="xMidYMid slice" focusable="false">
+    <title>{{ product.product_name }}</title>
+    <rect width="100%" height="225" fill="#55595c"/>
+    {% if image %}
+        <image href="data:image/png;base64,{{ image.encoded_image }}" alt="Product Image" width="100%" height="225" />
+    {% else %}
+        <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
+    {% endif %}
+    </svg>
+</div>
+
+<div class="container">
+    <h3 class="mt-5">Edit This Product</h3>
+    <form action="{{ url_for('edit_product', product_id=product.product_id) }}" method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="sku">SKU</label>
+                    <input type="number" class="form-control" id="sku" name="sku" value="{{ product.sku }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="product_name">Product Name</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.product_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="product_category">Product Category</label>
+                    <input type="text" class="form-control" id="product_category" name="product_category" value="{{ product.product_category }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="product_cost">Product Cost</label>
+                    <input type="number" step="0.01" class="form-control" id="product_cost" name="product_cost" value="{{ product.product_cost }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="suggested_sales_price">Suggested Sales Price</label>
+                    <input type="number" step="0.01" class="form-control" id="suggested_sales_price" name="suggested_sales_price" value="{{ product.suggested_sales_price }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="sales_tax_payable_based_on_suggested_sales_price">Sales Tax Payable</label>
+                    <input type="number" step="0.01" class="form-control" id="sales_tax_payable_based_on_suggested_sales_price" name="sales_tax_payable_based_on_suggested_sales_price" value="{{ product.sales_tax_payable_based_on_suggested_sales_price }}" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="profit_based_on_suggested_sales_price">Profit Based on Suggested Sales Price</label>
+                    <input type="number" step="0.01" class="form-control" id="profit_based_on_suggested_sales_price" name="profit_based_on_suggested_sales_price" value="{{ product.profit_based_on_suggested_sales_price }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="percentage_of_profit">Percentage of Profit</label>
+                    <input type="text" class="form-control" id="percentage_of_profit" name="percentage_of_profit" value="{{ product.percentage_of_profit }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="units_made">Units Made</label>
+                    <input type="number" class="form-control" id="units_made" name="units_made" value="{{ product.units_made }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="units_sold">Units Sold</label>
+                    <input type="number" class="form-control" id="units_sold" name="units_sold" value="{{ product.units_sold }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="units_available_for_sale">Units Available for Sale</label>
+                    <input type="number" class="form-control" id="units_available_for_sale" name="units_available_for_sale" value="{{ product.units_available_for_sale }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="cost_of_units_made">Cost of Units Made</label>
+                    <input type="number" step="0.01" class="form-control" id="cost_of_units_made" name="cost_of_units_made" value="{{ product.cost_of_units_made }}" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="cost_of_inventory_available_for_sale">Cost of Inventory Available for Sale</label>
+                    <input type="number" step="0.01" class="form-control" id="cost_of_inventory_available_for_sale" name="cost_of_inventory_available_for_sale" value="{{ product.cost_of_inventory_available_for_sale }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="cogs_per_units_sold">COGS per Unit Sold</label>
+                    <input type="number" step="0.01" class="form-control" id="cogs_per_units_sold" name="cogs_per_units_sold" value="{{ product.cogs_per_units_sold }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="money_collected_including_sales_tax">Money Collected Including Sales Tax</label>
+                    <input type="number" step="0.01" class="form-control" id="money_collected_including_sales_tax" name="money_collected_including_sales_tax" value="{{ product.money_collected_including_sales_tax }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="date_sold">Date Sold</label>
+                    <input type="date" class="form-control" id="date_sold" name="date_sold" value="{{ product.date_sold }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight</label>
+                    <input type="number" step="0.01" class="form-control" id="weight" name="weight" value="{{ product.weight }}" required>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+    <br>
+</div>
+{% endblock %}
