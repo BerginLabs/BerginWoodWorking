@@ -9,6 +9,10 @@ class Products(db.Model):
     __tablename__ = 'products'
 
     product_id = db.Column(db.String(36), default=lambda: str(uuid.uuid4()), primary_key=True)
+    
+    created_date = db.Column(db.DateTime, nullable=True)
+    updated_date = db.Column(db.DateTime, nullable=True)
+    
     sku = db.Column(db.Integer)
     product_name = db.Column(db.String(255))
     product_category = db.Column(db.String(255))
@@ -33,6 +37,10 @@ class ProductImages(db.Model):
     __tablename__ = 'product_images'
     
     product_image_id = db.Column(db.String(36), default=lambda: str(uuid.uuid4()), primary_key=True)
+    
+    created_date = db.Column(db.DateTime, nullable=True)
+    updated_date = db.Column(db.DateTime, nullable=True)
+    
     product_id = db.Column(db.String(36), db.ForeignKey('products.product_id'))
     sku = db.Column(db.Integer)
     encoded_image = db.Column(db.Text)
@@ -42,6 +50,10 @@ class ProductCategories(db.Model):
     __tablename__ = 'product_categories'
     
     product_category_id = db.Column(db.String(36), default=lambda: str(uuid.uuid4()), primary_key=True)
+
+    created_date = db.Column(db.DateTime, nullable=True)
+    updated_date = db.Column(db.DateTime, nullable=True)
+
     category_code = db.Column(db.String(10))
     category_name = db.Column(db.String(255))
     encoded_image = db.Column(db.Text)

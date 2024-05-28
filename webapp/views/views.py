@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-
-from webapp import app, db
-from webapp.models.products import Products, ProductImages, ProductCategories
+from datetime import datetime
 
 from flask import request
 from flask import render_template
@@ -10,12 +8,102 @@ from flask import url_for
 from flask import redirect
 from flask import flash
 
+from flask_login import login_user, logout_user, login_required, current_user
+
+from webapp import app, db
+from webapp.models.products import Products, ProductImages, ProductCategories
+from webapp.models.users import Users
+
 
 @app.route("/", methods=["GET"])
 def index():
     coasters = Products.query.filter(Products.product_category == "COA").all()
-    
     return render_template('index.html', coasters=coasters, search_enabled=False), 200
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        user_email = request.form['user_email']
+        password = request.form['password']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        phone_number = request.form['phone_number']
+        address = request.form['address']
+        city = request.form['city']
+        state = request.form['state']
+        
+        if Users.query.filter_by(user_email=user_email).first():
+            flash("Email address already exists. Please use forgot password.", "danger")
+            return redirect(url_for('register'))
+
+        new_user = Users(
+            user_email=user_email,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
+            address=address,
+            city=city,
+            state=state,
+            created_date = datetime.now(),
+            updated_date = datetime.now()
+        )
+        
+        new_user.set_password(password)
+        
+        db.session.add(new_user)
+        db.session.commit()
+        
+        flash("Registration successful. Please log in.", "success")
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user_email = request.form['user_email']
+        password = request.form['password']
+        
+        user_to_login = Users.query.filter_by(user_email=user_email).first()
+        
+        if user_to_login and user_to_login.check_password(password):
+            login_user(user_to_login)
+            flash('Login successful.', "success")
+            return redirect(url_for('index'))
+        
+        else:
+            flash('Invalid email address or password.', "danger")
+    
+    return render_template('login.html')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    
+    flash('You have successfully been logged out.', "success")
+    return redirect(url_for('index'))
+
+
+@app.route('/users/profile', methods=['GET', 'POST'])
+def my_profile():
+    flash("this page is still in development.", "warning")
+    
+    profile = Users.query.filter(Users.user_id == current_user.user_id).first()
+    if request.method == "POST":
+        profile.first_name = request.form['first_name']
+        profile.last_name = request.form['last_name']
+        profile.phone_number = request.form['phone_number']
+        profile.user_email = request.form['user_email']
+        db.session.commit()
+        
+        flash("Successfully updated profile.", "success")
+        return redirect(url_for('my_profile'))
+
+    return render_template("my_profile.html", me=profile)
 
 
 @app.route("/products", methods=["GET"])
@@ -50,21 +138,26 @@ def contact():
 
 @app.route("/cart")
 def cart():
+    flash("this page is coming soon.", "warning")
     return render_template('cart.html')
 
 
 @app.route("/admin", methods=['GET'])
+@login_required
 def admin():
     product_data = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .all()
+        
+    user_data = Users.query.all()
 
     return render_template(
-        'admin.html', product_data=product_data
+        'admin.html', product_data=product_data, user_data=user_data
     ), 200
 
 
 @app.route("/admin/view/<product_id>", methods=['GET'])
+@login_required
 def view_product(product_id=None):
     query = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
@@ -77,6 +170,7 @@ def view_product(product_id=None):
 
 
 @app.route("/admin/remove/<product_id>", methods=['GET'])
+@login_required
 def remove_product(product_id=None):
     try:
         product = db.session.query(Products).filter(Products.product_id == product_id).first()
@@ -102,6 +196,7 @@ def remove_product(product_id=None):
 
 
 @app.route('/admin/edit/<product_id>', methods=['GET', 'POST'])
+@login_required
 def edit_product(product_id=None):
     query = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \

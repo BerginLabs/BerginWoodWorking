@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="text-center">
+                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                <h6>Upload a different photo</h6>
+                <input type="file" class="form-control">
+            </div>
+        </div><!--/col-3-->
+
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#profile" data-bs-toggle="tab">Profile</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content pt-3">
+                <div class="tab-pane active" id="profile">
+                    <form class="form" action="{{ url_for('my_profile') }}" method="post" id="profile_form">
+                        <div class="form-group row">
+                            <label for="first_name" class="col-lg-3 col-form-label"><h4>First Name</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{ me.first_name }}" placeholder="{{ me.first_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="last_name" class="col-lg-3 col-form-label"><h4>Last Name</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="last_name" id="last_name" value="{{ me.last_name }}" placeholder="{{ me.last_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone_number" class="col-lg-3 col-form-label"><h4>Phone Number</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ me.phone_number }}" placeholder="{{ me.phone_number }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user_email" class="col-lg-3 col-form-label"><h4>Email</h4></label>
+                            <div class="col-lg-9">
+                                <input type="email" class="form-control" name="user_email" id="user_email" value="{{ me.user_email }}" placeholder="{{ me.user_email }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="address" class="col-lg-3 col-form-label"><h4>Address</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="address" id="address" value="{{ me.address }}" placeholder="{{ me.address }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-lg-3 col-form-label"><h4>City</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="city" id="city" value="{{ me.city }}" placeholder="{{ me.city }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state" class="col-lg-3 col-form-label"><h4>State</h4></label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="state" id="state" value="{{ me.state }}" placeholder="{{ me.user_email }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="email_verified" class="col-lg-3 col-form-label"><h4>Email Verified</h4></label>
+                            <div class="col-lg-9">
+                                <div class="form-control" id="email_verified">{{ me.email_verified }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone_verified" class="col-lg-3 col-form-label"><h4>Phone Verified</h4></label>
+                            <div class="col-lg-9">
+                                <div class="form-control" id="phone_verified">{{ me.phone_verified }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="is_admin" class="col-lg-3 col-form-label"><h4>Is Admin</h4></label>
+                            <div class="col-lg-9">
+                                <div class="form-control" id="is_admin">{{ me.is_admin }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-check"></i> Save</button>
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
