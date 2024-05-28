@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<br>
 <div class="container">
 
-    <div class="container">
-      <div class="col-md-8 p-lg-5 mx-auto my-5">
-        <h3 class="display-3 fw-bold">Proudly Produced in California.</h3>
-        <h4 class="fw-normal text-muted mb-4">Please select one of our <b>{{ product_categories|length }}</b> product categories below.</h4>
-        <div class="d-flex gap-3 justify-content-center lead fw-normal"></div>
+    <div class="p-4 p-md-5 mb-4  text-black rounded bg-light" align="center">
+      <div class="col-md-12 px-0">
+          <h4 class="display-4 fw-bold">Proudly Produced in California.</h4>
+          <p class="lead my-3">Please choose from one of our <b>{{ product_categories|length }}</b> product categories below.</p>
       </div>
     </div>
-    
+
     <div class="container">
       <table class="table table-borderless table-responsive">
           <thead>
