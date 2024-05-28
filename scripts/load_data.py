@@ -6,13 +6,12 @@ import os
 import pandas as pd
 import numpy as np
 
-from app import app, db
-from app import Products, ProductImages, ProductCategories
+from webapp import app, db
+from webapp.models.products import Products, ProductImages, ProductCategories
 
 
 def main():
     with app.app_context():
-        # print_table_sql()
         print("[+] Dropping all tables.")
         db.drop_all()
         
