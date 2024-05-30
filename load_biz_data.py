@@ -101,6 +101,7 @@ def load_products():
                 updated_date=datetime.now(),
                 sku=row['SKU'],
                 product_name=row['ProductName'],
+                public_online_name=row['PublicOnlineName'],
                 product_category=row['ProductCategory'],
                 product_cost=row['ProductCost'],
                 suggested_sales_price=row['SuggestedSalesPrice'],
@@ -132,7 +133,7 @@ def load_users():
     print(f"[+] {len(users_df)} user records found to import.")
     
     for _, row in users_df.iterrows():
-        if row['first_name'] == 'pat' and row['last_name'] == 'bergin':
+        if row['first_name'].lower() == 'pat' and row['last_name'].lower() == 'bergin':
             new_user = Users(
                 created_date=datetime.now(),
                 updated_date=datetime.now(),
@@ -143,9 +144,10 @@ def load_users():
                 address=row['address'],
                 city=row['city'],
                 state=row['state'],
+                zip_code=row['zip_code'],
                 email_verified=False,
                 phone_verified=False,
-                is_admin=True   
+                is_admin=True
             )
 
         else:
@@ -159,6 +161,7 @@ def load_users():
                 address=row['address'],
                 city=row['city'],
                 state=row['state'],
+                zip_code=row['zip_code'],
                 email_verified=False,
                 phone_verified=False,
                 is_admin=False            

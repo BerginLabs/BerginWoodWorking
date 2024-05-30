@@ -7,12 +7,12 @@
         <div class="col-md-6">
             <svg 
                 class="bd-placeholder-img card-img-top" width="100%" height="225" 
-                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.product_name }}" 
+                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.public_online_name }}" 
                 preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>{{ product.product_name }}</title>
+                <title>{{ product.public_online_name }}</title>
                 <rect width="100%" height="225" fill="#55595c"/>
                 {% if image.encoded_image %}
-                    <image href="data:image/png;base64,{{ image.encoded_image }}" alt="{{ product.product_name }}" width="100%" height="225" />
+                    <image href="data:image/png;base64,{{ image.encoded_image }}" alt="{{ product.public_online_name }}" width="100%" height="225" />
                 {% else %}
                     <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">
                         No Image
@@ -21,7 +21,7 @@
             </svg>
         </div>
         <div class="col-md-6">
-            <h2 class="display-5">{{ product.product_name }}</h2>
+            <h2 class="display-5">{{ product.public_online_name }}</h2>
             <p class="lead">${{ product.suggested_sales_price }}</p>
             <button class="btn btn-primary" id="addToCart">Add to Cart</button>
         </div>

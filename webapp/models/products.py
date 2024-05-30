@@ -15,6 +15,7 @@ class Products(db.Model):
     
     sku = db.Column(db.Integer)
     product_name = db.Column(db.String(255))
+    public_online_name = db.Column(db.String(255))
     product_category = db.Column(db.String(255))
     product_cost = db.Column(db.Numeric(10, 2))
     suggested_sales_price = db.Column(db.Numeric(10, 2))

@@ -8,6 +8,7 @@ from flask import render_template
 from flask import url_for
 from flask import redirect
 from flask import flash
+from flask import session
 
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -15,34 +16,6 @@ from webapp import app, db
 from webapp.models.products import Products, ProductImages, ProductCategories
 from webapp.models.users import Users
 from webapp.models.events import UpcomingEvents
-
-
-@app.route("/", methods=["GET"])
-def index():
-    search_enabled = False
-    
-    upcoming_events = UpcomingEvents.query.order_by(UpcomingEvents.date).all()
-    
-    coasters = db.session.query(Products, ProductImages) \
-        .join(ProductImages, Products.product_id == ProductImages.product_id) \
-        .filter(Products.product_category == "COA") \
-        .all()              
-    coaster_highlight = coasters[random.randint(0, len(coasters) - 1)] if coasters else None
-    
-    boards = db.session.query(Products, ProductImages) \
-        .join(ProductImages, Products.product_id == ProductImages.product_id) \
-        .filter(Products.product_category == "CGB") \
-        .all()              
-    board_highlight = boards[random.randint(0, len(boards) - 1)] if boards else None
-
-    return render_template(
-        'index.html', 
-        coasters=coasters, 
-        coaster_highlight=coaster_highlight,
-        board_highlight=board_highlight,
-        upcoming_events=upcoming_events, 
-        search_enabled=search_enabled
-    ), 200
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -56,6 +29,7 @@ def register():
         address = request.form['address']
         city = request.form['city']
         state = request.form['state']
+        zip_code = request.form['zip_code']
         
         if Users.query.filter_by(user_email=user_email).first():
             flash("Email address already exists. Please use forgot password.", "danger")
@@ -69,8 +43,12 @@ def register():
             address=address,
             city=city,
             state=state,
+            zip_code=zip_code,
             created_date = datetime.now(),
-            updated_date = datetime.now()
+            updated_date = datetime.now(),
+            email_verified=False,
+            phone_verified=False,
+            is_admin=False
         )
         
         new_user.set_password(password)
@@ -94,6 +72,7 @@ def login():
         
         if user_to_login and user_to_login.check_password(password):
             login_user(user_to_login)
+            session.permanent = True
             flash('Login successful.', "success")
             return redirect(url_for('index'))
         
@@ -110,6 +89,56 @@ def logout():
     
     flash('You have successfully been logged out.', "success")
     return redirect(url_for('index'))
+
+
+@app.route("/", methods=["GET"])
+def index():    
+    upcoming_events = UpcomingEvents.query.order_by(UpcomingEvents.date).all()
+    
+    coasters = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id) \
+        .filter(Products.product_category == "COA") \
+        .all()              
+    coaster_highlight = coasters[random.randint(0, len(coasters) - 1)] if coasters else None
+    
+    boards = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id) \
+        .filter(Products.product_category == "CGB") \
+        .all()              
+    board_highlight = boards[random.randint(0, len(boards) - 1)] if boards else None
+
+    product_categories = ProductCategories.query.filter(
+        ProductCategories.category_code != "null", 
+        ProductCategories.category_code != "None"
+        ) \
+        .order_by(ProductCategories.category_name) \
+        .all()
+
+    category_code = request.args.get('pcc', None)    
+    if category_code:
+        search_query = request.args.get('search', None)
+        if search_query:
+            results = db_query = db.session.query(Products, ProductImages) \
+                .join(ProductImages, Products.product_id == ProductImages.product_id) \
+                .filter(Products.product_category == str(category_code)) \
+                .filter(Products.product_name.like(f'%{search_query}%'))
+        else:
+            results = db_query = db.session.query(Products, ProductImages) \
+                .join(ProductImages, Products.product_id == ProductImages.product_id) \
+                .filter(Products.product_category == str(category_code))
+        results = db_query.all()
+    else:
+        results = []
+
+    return render_template(
+        'index.html',
+        coaster_highlight=coaster_highlight,
+        board_highlight=board_highlight,
+        upcoming_events=upcoming_events, 
+        product_categories=product_categories,
+        category_code=category_code,
+        results=results
+    ), 200
 
 
 @app.route('/users/profile', methods=['GET', 'POST'])
@@ -129,32 +158,6 @@ def my_profile():
 
     return render_template("my_profile.html", me=profile)
 
-
-@app.route("/products", methods=["GET"])
-def products():
-    product_categories = ProductCategories.query.filter(
-        ProductCategories.category_code != "null", 
-        ProductCategories.category_code != "None"
-        ) \
-        .order_by(ProductCategories.category_name) \
-        .all()
-    
-    category_code = request.args.get('pcc', None)    
-    if category_code:
-        results = db.session.query(Products, ProductImages) \
-            .join(ProductImages, Products.product_id == ProductImages.product_id) \
-            .filter(Products.product_category == str(category_code)) \
-            .all()              
-    
-    else:
-        results = []
-
-    return render_template(
-        'products.html', 
-        results=results,
-        category_code=category_code, 
-        product_categories=product_categories
-    ), 200
 
 @app.route("/products/view/<product_id>", methods=['GET'])
 def product_details(product_id=None):   
@@ -182,19 +185,26 @@ def cart():
     return render_template('cart.html')
 
 
-@app.route("/admin", methods=['GET'])
+@app.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
     profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
-    
     if not profile:
         return redirect( url_for('index') )
     
-    product_data = db.session.query(Products, ProductImages) \
-        .join(ProductImages, Products.product_id == ProductImages.product_id) \
-        .all()
-        
+    db_query = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id)
+    
+    if request.method == 'POST':
+        search_query = request.form['search']
+        print(search_query)
+        if search_query:
+            db_query = db_query.filter(Products.product_name.like(f'%{search_query}%'))
+    
+    product_data = db_query.all()
     user_data = Users.query.all()
+    
+    print(len(product_data))
     
     return render_template(
         'admin.html', product_data=product_data, user_data=user_data
@@ -205,7 +215,6 @@ def admin():
 @login_required
 def view_product(product_id=None):
     profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
-    
     if not profile:
         return redirect( url_for('index') )
     
@@ -223,7 +232,6 @@ def view_product(product_id=None):
 @login_required
 def remove_product(product_id=None):
     profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
-    
     if not profile:
         return redirect( url_for('index') )
     
@@ -254,7 +262,6 @@ def remove_product(product_id=None):
 @login_required
 def edit_product(product_id=None):
     profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
-    
     if not profile:
         return redirect( url_for('index') )
     

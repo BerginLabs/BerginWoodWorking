@@ -2,8 +2,7 @@
 
 import os
 
-# from flask import Flask
-# from flask_sqlalchemy import SQLAlchemy
+from datetime import timedelta
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +18,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = f"mysql://{DB_USER}:{DB_PASSWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG      = True
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=10)
 
 config = Config()
 
@@ -29,3 +29,5 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+
+from webapp.views.views import *
