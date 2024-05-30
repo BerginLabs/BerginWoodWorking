@@ -21,32 +21,20 @@ from webapp.models.events import UpcomingEvents
 def index():
     search_enabled = False
     
+    upcoming_events = UpcomingEvents.query.order_by(UpcomingEvents.date).all()
+    
     coasters = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .filter(Products.product_category == "COA") \
         .all()              
+    coaster_highlight = coasters[random.randint(0, len(coasters) - 1)] if coasters else None
     
-    if coasters:
-        coaster_index = random.randint(0, len(coasters) - 1)
-        coaster_highlight = coasters[coaster_index]
-        
-    else:
-        coaster_highlight = None
-
     boards = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .filter(Products.product_category == "CGB") \
         .all()              
-    
-    if boards:
-        board_index = random.randint(0, len(boards) - 1)
-        board_highlight = boards[board_index]
-        
-    else:
-        board_highlight = None
-        
-    upcoming_events = UpcomingEvents.query.order_by(UpcomingEvents.date).all()
-    
+    board_highlight = boards[random.randint(0, len(boards) - 1)] if boards else None
+
     return render_template(
         'index.html', 
         coasters=coasters, 
@@ -168,6 +156,20 @@ def products():
         product_categories=product_categories
     ), 200
 
+@app.route("/products/view/<product_id>", methods=['GET'])
+def product_details(product_id=None):   
+    query = db.session.query(Products, ProductImages) \
+        .join(ProductImages, Products.product_id == ProductImages.product_id) \
+        .filter(Products.product_id == product_id) \
+        .first()
+
+    product, image = query[0], query[1]
+    
+    product_category = db.session.query(ProductCategories) \
+        .filter(ProductCategories.category_code == product.product_category) \
+        .first()
+    
+    return render_template('product_details.html', product=product, image=image, product_category=product_category)
 
 @app.route("/contact")
 def contact():
@@ -176,19 +178,24 @@ def contact():
 
 @app.route("/cart")
 def cart():
-    flash("this page is coming soon.", "warning")
+    flash("this page is still in development.", "warning")
     return render_template('cart.html')
 
 
 @app.route("/admin", methods=['GET'])
 @login_required
 def admin():
+    profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
+    
+    if not profile:
+        return redirect( url_for('index') )
+    
     product_data = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .all()
         
     user_data = Users.query.all()
-
+    
     return render_template(
         'admin.html', product_data=product_data, user_data=user_data
     ), 200
@@ -197,6 +204,11 @@ def admin():
 @app.route("/admin/view/<product_id>", methods=['GET'])
 @login_required
 def view_product(product_id=None):
+    profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
+    
+    if not profile:
+        return redirect( url_for('index') )
+    
     query = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .filter(Products.product_id == product_id) \
@@ -210,6 +222,11 @@ def view_product(product_id=None):
 @app.route("/admin/remove/<product_id>", methods=['GET'])
 @login_required
 def remove_product(product_id=None):
+    profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
+    
+    if not profile:
+        return redirect( url_for('index') )
+    
     try:
         product = db.session.query(Products).filter(Products.product_id == product_id).first()
         image = db.session.query(ProductImages).filter(ProductImages.product_id == product_id).first()
@@ -236,6 +253,11 @@ def remove_product(product_id=None):
 @app.route('/admin/edit/<product_id>', methods=['GET', 'POST'])
 @login_required
 def edit_product(product_id=None):
+    profile = Users.query.filter(Users.user_id == current_user.user_id, Users.is_admin == True).first()    
+    
+    if not profile:
+        return redirect( url_for('index') )
+    
     query = db.session.query(Products, ProductImages) \
         .join(ProductImages, Products.product_id == ProductImages.product_id) \
         .filter(Products.product_id == product_id) \

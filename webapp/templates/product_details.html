@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+            
+{% block content %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <svg 
+                class="bd-placeholder-img card-img-top" width="100%" height="225" 
+                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.product_name }}" 
+                preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>{{ product.product_name }}</title>
+                <rect width="100%" height="225" fill="#55595c"/>
+                {% if image.encoded_image %}
+                    <image href="data:image/png;base64,{{ image.encoded_image }}" alt="{{ product.product_name }}" width="100%" height="225" />
+                {% else %}
+                    <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">
+                        No Image
+                    </text>
+                {% endif %}
+            </svg>
+        </div>
+        <div class="col-md-6">
+            <h2 class="display-5">{{ product.product_name }}</h2>
+            <p class="lead">${{ product.suggested_sales_price }}</p>
+            <button class="btn btn-primary" id="addToCart">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Product Details</h3>
+            <ul>
+                <li>Sku: {{ product.sku }}</li>
+                <li>Category: {{ product_category.category_name }}</li>
+                {% if product.weight != None %}
+                    <li>Weight: {{ product.weight }} lbs</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

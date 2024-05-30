@@ -3,7 +3,7 @@
 <main class="container">
     <br>
 
-    <div class="p-4 p-md-5 mb-4  text-black rounded bg-light" align="center">
+    <div class="p-4 p-md-5 mb-4 text-black rounded bg-light text-center">
         <div class="col-md-12 px-0">
             <h2 class="display-3 fw-bold">Bergin Woodworking</h2>
             <p class="lead my-3">Established in Bakersfield, CA.</p>
@@ -14,102 +14,95 @@
         {% set cp, cpi = coaster_highlight[0], coaster_highlight[1] %}
 
         <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">Product Highlights</strong>
-            <h4 class="mb-0">Coasters in stock.</h4>
-            <div class="mb-1 text-muted">
-                <p>{{ cp.product_name }}!</p>
-            </div>
-            <a href="#" class="stretched-link">Details</a>
-        </div>
-
-        <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="" role="img" aria-label="" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>{{ cp.product_name }}</title>
-                <rect width="100%" height="100%" fill="#55595c"/>
-                {% if cpi.encoded_image %}
-                    <image href="data:image/png;base64,{{ cpi.encoded_image }}" alt="{{ cp.product_name }}" width="100%" height="100%" />
-                {% else %}
-                    <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">
-                        No Image
-                    </text>
-                {% endif %}
-            </svg>
-        </div>
-        
-    </div>
-
-    </div>
-
-    <div class="col-md-6">
-        {% set bp, bpi = board_highlight[0], board_highlight[1] %}
-
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-primary">New Cutting Boards!</strong>
-                <h4 class="mb-0">{{ bp.product_name }}</h4>
-                <div class="mb-1 text-muted">
-                    <p>{{ bp.product_name }}</p>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Product Highlights</strong>
+                    <h4 class="mb-0">Coasters in stock.</h4>
+                    <div class="mb-1 text-muted">
+                        <p>{{ cp.product_name }}!</p>
+                    </div>
+                    <a href="#" class="stretched-link">Details</a>
                 </div>
-                <p class="card-text mb-auto">Checkout our new cutting <a href="#" class="stretched-link">boards</a>.</p>
+
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>{{ cp.product_name }}</title>
+                        <rect width="100%" height="100%" fill="#55595c"/>
+                        {% if cpi.encoded_image %}
+                            <image href="data:image/png;base64,{{ cpi.encoded_image }}" alt="{{ cp.product_name }}" width="100%" height="100%" />
+                        {% else %}
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
+                        {% endif %}
+                    </svg>
+                </div>
             </div>
-            <div class="col-auto d-none d-lg-block">
-                <svg class="bd-placeholder-img" width="200" height="250" xmlns="" role="img" aria-label="" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>{{ bp.product_name }}</title>
-                    <rect width="100%" height="100%" fill="#55595c"/>
-                    {% if bpi.encoded_image %}
-                        <image href="data:image/png;base64,{{ bpi.encoded_image }}" alt="{{ bp.product_name }}" width="100%" height="100%" />
-                    {% else %}
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">
-                            No Image
-                        </text>
-                    {% endif %}
-                </svg>
+        </div>
+
+        <div class="col-md-6">
+            {% set bp, bpi = board_highlight[0], board_highlight[1] %}
+
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">New Cutting Boards!</strong>
+                    <h4 class="mb-0">{{ bp.product_name }}</h4>
+                    <div class="mb-1 text-muted">
+                        <p>{{ bp.product_name }}</p>
+                    </div>
+                    <p class="card-text mb-auto">Checkout our new cutting <a href="#" class="stretched-link">boards</a>.</p>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>{{ bp.product_name }}</title>
+                        <rect width="100%" height="100%" fill="#55595c"/>
+                        {% if bpi.encoded_image %}
+                            <image href="data:image/png;base64,{{ bpi.encoded_image }}" alt="{{ bp.product_name }}" width="100%" height="100%" />
+                        {% else %}
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
+                        {% endif %}
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
-    
-  </div>
 
-  <div class="row g-5">
-    <div class="col-md-8">
-        <h4 class="pb-4 mb-4 fst-italic border-bottom">
-            Upcoming Events
-        </h4>
-        {% for event in upcoming_events %}
-        <article class="blog-post">
-            <h5 class="blog-post-title">{{ event.title }}</h5>
-            <p class="blog-post-meta">{{ event.date.strftime('%m/%d/%Y') }} <a href="{{ event.url }}">Details</a></p>
-            <p>{{ event.description }}</p>
-            <hr>
-        {% endfor %}
-    </div>
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h4 class="pb-4 mb-4 fst-italic border-bottom">Upcoming Events</h4>
+            {% for event in upcoming_events %}
+            <article class="blog-post">
+                <h5 class="blog-post-title">{{ event.title }}</h5>
+                <p class="blog-post-meta">{{ event.date.strftime('%m/%d/%Y') }} <a href="{{ event.url }}">Details</a></p>
+                <p>{{ event.description }}</p>
+                <hr>
+            </article>
+            {% endfor %}
+        </div>
 
-    <div class="col-md-4">
-        <div class="position-sticky" style="top: 2rem;">
-            <div class="p-4 mb-3 bg-light rounded">
-                <h4 class="fst-italic">About</h4>
-                <p class="mb-0">Bergin Woodworking was Established in 1989.</p>
+        <div class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="fst-italic">About</h4>
+                    <p class="mb-0">Bergin Woodworking was Established in 1989.</p>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Resources</h4>
+                    <ol class="list-unstyled mb-0">
+                        <li><a href="#">Product Info</a></li>
+                        <li><a href="#">Maintenance Kits</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ol>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Social Media</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
             </div>
-
-        <div class="p-4">
-            <h4 class="fst-italic">Resources</h4>
-            <ol class="list-unstyled mb-0">
-                <li><a href="#">Product Info</a></li>
-                <li><a href="#">Maintenance Kits</a></li>
-                <li><a href="#">FAQ</a></li>
-            </ol>
         </div>
-
-        <div class="p-4">
-            <h4 class="fst-italic">Social Media</h4>
-            <ol class="list-unstyled">
-                <li><a href="#">Twitter</a></li>
-                <li><a href="#">Facebook</a></li>
-            </ol>
-        </div>
-    </div>
     </div>
 </main>
 {% endblock %}
