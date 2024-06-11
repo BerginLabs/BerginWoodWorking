@@ -38,17 +38,15 @@
                         </div>
 
                         <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" 
-                                role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>{{ cp.public_online_name }}</title>
-                                <rect width="100%" height="100%" fill="#55595c"/>
-                                {% if cpi.encoded_image %}
-                                    <image href="data:image/png;base64,{{ cpi.encoded_image }}" alt="{{ cp.public_online_name }}" 
-                                        width="100%" height="100%" />
-                                {% else %}
+                            {% if cpi.encoded_image %}
+                                <img src="data:image/png;base64,{{ cpi.encoded_image }}" alt="{{ cp.public_online_name }}" width="200" height="250" class="img-fluid"/>
+                            {% else %}
+                                <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title>{{ cp.public_online_name }}</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
                                     <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
-                                {% endif %}
-                            </svg>
+                                </svg>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -63,18 +61,18 @@
                             <div class="mb-1 text-muted">
                                 <p>{{ bp.public_online_name }}</p>
                             </div>
-                            <p class="card-text mb-auto">Checkout our new cutting <a href="#" class="stretched-link">boards</a>.</p>
+                            <p class="card-text mb-auto">Check out our new cutting <a href="#" class="stretched-link">boards</a>.</p>
                         </div>
                         <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>{{ bp.public_online_name }}</title>
-                                <rect width="100%" height="100%" fill="#55595c"/>
-                                {% if bpi.encoded_image %}
-                                    <image href="data:image/png;base64,{{ bpi.encoded_image }}" alt="{{ bp.public_online_name }}" width="100%" height="100%" />
-                                {% else %}
+                            {% if bpi.encoded_image %}
+                                <img src="data:image/png;base64,{{ bpi.encoded_image }}" alt="{{ bp.public_online_name }}" width="200" height="250" class="img-fluid"/>
+                            {% else %}
+                                <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title>{{ bp.public_online_name }}</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
                                     <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
-                                {% endif %}
-                            </svg>
+                                </svg>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -92,21 +90,21 @@
                                 {% for p, pi in results %}
                                 <div class="col">
                                     <div class="card shadow-sm">
-                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ p.public_online_name }}" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                            <title>{{ p.public_online_name }}</title>
-                                            <rect width="100%" height="225" fill="#55595c"/>
-                                            {% if pi.encoded_image %}
-                                                <image href="data:image/png;base64,{{ pi.encoded_image }}" alt="Product Image" width="100%" height="225" />
-                                            {% else %}
+                                        {% if pi.encoded_image %}
+                                            <img src="data:image/png;base64,{{ pi.encoded_image }}" alt="Product Image" class="card-img-top" width="100%" height="225"/>
+                                        {% else %}
+                                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ p.public_online_name }}" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                                <title>{{ p.public_online_name }}</title>
+                                                <rect width="100%" height="225" fill="#55595c"/>
                                                 <text x="50%" y="50%" fill="#eceeef" dy=".3em" text-anchor="middle">No Image</text>
-                                            {% endif %}
-                                        </svg>
-        
+                                            </svg>
+                                        {% endif %}
+
                                         <div class="card-body">
                                             <small class="text-body-primary">{{ p.public_online_name }}</small>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
-                                                    <a type="button" href="/products/view/{{ p.product_id }}" class="btn btn-sm btn-outline-primary">Details</a>
+                                                    <a href="/products/view/{{ p.product_id }}" class="btn btn-sm btn-outline-primary">Details</a>
                                                     <button type="button" class="btn btn-sm btn-outline-success">Add to cart</button>
                                                 </div>
                                                 <small class="text-body-secondary">${{ p.suggested_sales_price }}</small>

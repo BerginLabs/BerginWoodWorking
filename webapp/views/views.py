@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import shopify
+
 import random
 from datetime import datetime
 
@@ -12,7 +14,7 @@ from flask import session
 
 from flask_login import login_user, logout_user, login_required, current_user
 
-from webapp import app, db
+from webapp import app, db, config
 from webapp.models.products import Products, ProductImages, ProductCategories
 from webapp.models.users import Users
 from webapp.models.events import UpcomingEvents
@@ -116,20 +118,18 @@ def index():
 
     category_code = request.args.get('pcc', None)    
     if category_code:
-        search_query = request.args.get('search', None)
-        if search_query:
-            results = db_query = db.session.query(Products, ProductImages) \
-                .join(ProductImages, Products.product_id == ProductImages.product_id) \
-                .filter(Products.product_category == str(category_code)) \
-                .filter(Products.product_name.like(f'%{search_query}%'))
-        else:
-            results = db_query = db.session.query(Products, ProductImages) \
-                .join(ProductImages, Products.product_id == ProductImages.product_id) \
-                .filter(Products.product_category == str(category_code))
-        results = db_query.all()
+        results = db.session.query(Products, ProductImages) \
+            .join(ProductImages, Products.product_id == ProductImages.product_id) \
+            .filter(Products.product_category == str(category_code)).all()
     else:
         results = []
 
+    # session = shopify.Session(config.SHOPIFY_URL, config.SHOPIFY_API_VERSION, config.SHOPIFY_ACCESS_TOKEN)
+    # shopify.ShopifyResource.activate_session(session)
+    
+    # shopify_products = shopify.Product.find()
+    # shopify.ShopifyResource.clear_session()
+    
     return render_template(
         'index.html',
         coaster_highlight=coaster_highlight,
@@ -137,7 +137,8 @@ def index():
         upcoming_events=upcoming_events, 
         product_categories=product_categories,
         category_code=category_code,
-        results=results
+        results=results # ,
+        # shopify_products=shopify_products
     ), 200
 
 
