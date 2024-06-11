@@ -18,17 +18,18 @@ class Users(UserMixin, db.Model):
     created_date = db.Column(db.DateTime, nullable=False)
     updated_date = db.Column(db.DateTime, nullable=False)
     
-    first_name = db.Column(db.String(150), nullable=True)
-    last_name = db.Column(db.String(150), nullable=True)
-    phone_number = db.Column(db.String(50), nullable=True)
+    first_name = db.Column(db.String(150), nullable=False)
+    last_name = db.Column(db.String(150), nullable=False)
+    phone_number = db.Column(db.String(50), nullable=False)
     
-    address = db.Column(db.String(255), nullable=True)
-    city = db.Column(db.String(25), nullable=True)
-    state = db.Column(db.String(25), nullable=True)
+    address = db.Column(db.String(255), nullable=False)
+    city = db.Column(db.String(25), nullable=False)
+    state = db.Column(db.String(25), nullable=False)
+    zip_code = db.Column(db.Integer, nullable=False)
     
-    email_verified = db.Column(db.Boolean, nullable=True)
-    phone_verified = db.Column(db.Boolean, nullable=True)
-    is_admin = db.Column(db.Boolean, nullable=True)
+    email_verified = db.Column(db.Boolean, nullable=False)
+    phone_verified = db.Column(db.Boolean, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False)
     
     user_image = db.Column(db.Text, nullable=True)
 
